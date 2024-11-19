@@ -1,5 +1,6 @@
 package com.example.networkapp
 
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -75,8 +76,8 @@ class MainActivity : AppCompatActivity() {
         val imgURL = comicObject.getJSONObject("img").toString()
         val url = URL(imgURL)
         val imageData = url.readBytes()
-        ImageView(this).setImageBitmap(imageData)
+        val bitMap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+        ImageView(this).setImageBitmap(bitMap)
+        val file = File()
     }
-
-
 }
