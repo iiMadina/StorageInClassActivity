@@ -9,11 +9,13 @@ import android.widget.TextView
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
+import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
+import java.net.URL
 
 // TODO (1: Fix any bugs)
 // TODO (2: Add function saveComic(...) to save comic info when downloaded
@@ -52,9 +54,13 @@ class MainActivity : AppCompatActivity() {
         requestQueue.add (
             JsonObjectRequest(url
                 , {showComic(it)}
-                , {}
+                , {errorListener(it)}
             )
         )
+    }
+
+    private fun errorListener (error: VolleyError) {
+        Toast.makeText(this, "That comic doesn't exist. '$error'", Toast.LENGTH_LONG).show()
     }
 
     // Display a comic for a given comic JSON object
@@ -66,7 +72,10 @@ class MainActivity : AppCompatActivity() {
 
     // Implement this function
     private fun saveComic(comicObject: JSONObject) {
-
+        val imgURL = comicObject.getJSONObject("img").toString()
+        val url = URL(imgURL)
+        val imageData = url.readBytes()
+        ImageView(this).setImageBitmap(imageData)
     }
 
 
